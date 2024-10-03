@@ -5,10 +5,10 @@ import Input from './components/Input'
 function App() {
   const [password, setPassword] = useState("Senha")
   const [copyText, setCopyText] = useState("Copiar")
-  const [customSize, setCustomSize] = useState(8)
+  const [customSize, setCustomSize] = useState(20)
   const [showInput, setShowInput] = useState(false)
 
-  const passwordSize = showInput ? customSize : 8
+  const passwordSize = showInput ? customSize : 20
 
   function generatePassword() {
     const characters = "'1234567890-=!@#$%¨&*()_+qwertyuiop[asdfghjklç~]zxcvbnm,.;/QWERTYUIOP{ASDFGHJKLÇ^}ZXCVBNM<>:?";
