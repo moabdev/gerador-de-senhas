@@ -51,7 +51,7 @@ function App() {
         )}
 
       <div className={styles.buttons}>
-        <button onClick={generatePassword}>Gerar senha de {showInput ? customSize : 8} caracteres!</button>
+        <button onClick={generatePassword}>Gerar senha de {showInput ? customSize : 20} caracteres!</button>
         <button onClick={copyToClipboard}>
           {copyText}
         </button>
