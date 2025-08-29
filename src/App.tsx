@@ -14,12 +14,13 @@ function App() {
   const [strength, setStrength] = useState(0);
   const [tips, setTips] = useState<string[]>([]);
 
+  const [darkMode, setDarkMode] = useState(true); // Toggle dark mode
 
   const passwordSize = showInput ? customSize : 16;
 
   function calculateStrength(pass: string) {
     let score = 0;
-    let newTips = [];
+    let newTips: string[] = [];
 
     if (pass.length >= 8) score++;
     else newTips.push("Use pelo menos 8 caracteres");
@@ -75,12 +76,29 @@ function App() {
     return "bg-green-500";
   }
 
+  // Classes dinâmicas baseadas no modo
+  const containerBg = darkMode ? "bg-gray-900" : "bg-gradient-to-br from-indigo-500 to-purple-600";
+  const cardBg = darkMode ? "bg-gray-800" : "bg-white";
+  const cardText = darkMode ? "text-gray-100" : "text-gray-800";
+  const inputBg = darkMode ? "bg-gray-700 border-gray-600 text-gray-100" : "bg-white border-gray-300 text-gray-800";
+  const buttonPrimary = darkMode ? "bg-indigo-600 hover:bg-indigo-700 text-white" : "bg-indigo-600 hover:bg-indigo-700 text-white";
+  const buttonSecondary = darkMode ? "bg-gray-700 hover:bg-gray-600 text-gray-100" : "bg-gray-200 hover:bg-gray-300 text-gray-800";
+  const strengthBg = darkMode ? "bg-gray-600" : "bg-gray-200";
+  const tipsText = darkMode ? "text-gray-400" : "text-gray-600";
+  const strengthText = darkMode ? "text-gray-300" : "text-gray-700";
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 p-6">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
-          🔐 Gerador de Senhas
-        </h1>
+    <div className={`min-h-screen flex flex-col items-center justify-center p-6 ${containerBg}`}>
+      <div className={`rounded-2xl shadow-2xl p-8 w-full max-w-md ${cardBg} ${cardText}`}>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-center">🔐 Gerador de Senhas</h1>
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="ml-4 px-3 py-1 rounded-lg border border-gray-400 hover:bg-gray-500 transition"
+          >
+            {darkMode ? "Light" : "Dark"}
+          </button>
+        </div>
 
         <div className="space-y-3 mb-4">
           <label className="flex items-center gap-2">
@@ -88,6 +106,7 @@ function App() {
               type="checkbox"
               checked={showInput}
               onChange={() => setShowInput(!showInput)}
+              className="accent-indigo-500"
             />
             <span>Customizar tamanho</span>
           </label>
@@ -102,7 +121,7 @@ function App() {
                 min={4}
                 max={64}
                 onChange={(e) => setCustomSize(Number(e.target.value))}
-                className="border rounded px-2 py-1 w-20"
+                className={`border rounded px-2 py-1 w-20 ${inputBg}`}
               />
             </div>
           )}
@@ -112,6 +131,7 @@ function App() {
               type="checkbox"
               checked={useLowercase}
               onChange={() => setUseLowercase(!useLowercase)}
+              className="accent-indigo-500"
             />
             Letras minúsculas
           </label>
@@ -121,6 +141,7 @@ function App() {
               type="checkbox"
               checked={useUppercase}
               onChange={() => setUseUppercase(!useUppercase)}
+              className="accent-indigo-500"
             />
             Letras maiúsculas
           </label>
@@ -130,6 +151,7 @@ function App() {
               type="checkbox"
               checked={useNumbers}
               onChange={() => setUseNumbers(!useNumbers)}
+              className="accent-indigo-500"
             />
             Números
           </label>
@@ -139,6 +161,7 @@ function App() {
               type="checkbox"
               checked={useSymbols}
               onChange={() => setUseSymbols(!useSymbols)}
+              className="accent-indigo-500"
             />
             Símbolos
           </label>
@@ -147,36 +170,36 @@ function App() {
         <div className="flex flex-col gap-3">
           <button
             onClick={generatePassword}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-xl shadow-md transition"
+            className={`${buttonPrimary} py-2 px-4 rounded-xl shadow-md transition`}
           >
             Gerar senha de {passwordSize} caracteres
           </button>
 
           <button
             onClick={copyToClipboard}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-xl shadow-md transition"
+            className={`${buttonSecondary} py-2 px-4 rounded-xl shadow-md transition`}
           >
             {copyText}
           </button>
         </div>
 
-        <div className="mt-6 p-4 bg-gray-100 rounded-xl text-center font-mono break-all shadow-inner">
+        <div className={`mt-6 p-4 rounded-xl text-center font-mono break-all shadow-inner ${inputBg}`}>
           {password}
         </div>
 
         <div className="mt-4">
-          <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+          <div className={`w-full h-3 ${strengthBg} rounded-full overflow-hidden`}>
             <div
               className={`${getStrengthColor()} h-3 transition-all duration-500`}
               style={{ width: `${(strength / 5) * 100}%` }}
             ></div>
           </div>
-          <p className="text-center text-sm mt-2 text-gray-700">
+          <p className={`text-center text-sm mt-2 ${strengthText}`}>
             Força da senha
           </p>
 
           {tips.length > 0 && (
-            <ul className="mt-2 text-sm text-gray-600 list-disc list-inside">
+            <ul className={`mt-2 text-sm ${tipsText} list-disc list-inside`}>
               {tips.map((tip, index) => (
                 <li key={index}>{tip}</li>
               ))}
